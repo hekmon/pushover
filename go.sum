@@ -1,0 +1,4 @@
+github.com/gregdel/pushover v0.0.0-20190217183207-15d3fef40636 h1:6agUllU8gUNAallyB+afeLXMRLL6Q1z+S6YC7Pi1EIY=
+github.com/gregdel/pushover v0.0.0-20190217183207-15d3fef40636/go.mod h1:NbuXd8Iwy5dU99qFToB8mSE29qJOQNW/bphiV8CWj/k=
+github.com/hekmon/hllogger v1.0.0 h1:3u7SlstLAK34hOdnVzZlyhixnU78NjyIX2IMQzs9ZkE=
+github.com/hekmon/hllogger v1.0.0/go.mod h1:Tc7ICZV8BTIv2lwviaawXM1KGtzxdD8BpqMhJc3ZJ64=
