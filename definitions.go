@@ -1,6 +1,7 @@
 package pushover
 
 import (
+	"io"
 	"time"
 
 	"github.com/gregdel/pushover"
@@ -36,4 +37,5 @@ type Message struct {
 	DeviceName  string
 	Sound       string
 	HTML        bool
+	Attachment  io.Reader
 }

@@ -62,7 +62,8 @@ func (c *Controller) SendCustomMsg(msg Message) (err error) {
 	if !c.initialized() {
 		return
 	}
-	response, err := c.app.SendMessage(&pushover.Message{
+	// prepare message
+	raw := pushover.Message{
 		Message:     msg.Message,
 		Title:       msg.Title,
 		Priority:    int(msg.Priority),
@@ -75,7 +76,12 @@ func (c *Controller) SendCustomMsg(msg Message) (err error) {
 		DeviceName:  msg.DeviceName,
 		Sound:       msg.Sound,
 		HTML:        msg.HTML,
-	}, c.dest)
+	}
+	if msg.Attachment != nil {
+		raw.AddAttachment(msg.Attachment)
+	}
+	// send it
+	response, err := c.app.SendMessage(&raw, c.dest)
 	if err != nil {
 		err = fmt.Errorf("sending fail: %w", err)
 	} else if len(response.Errors) > 0 {
