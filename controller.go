@@ -12,17 +12,9 @@ type Controller struct {
 
 // New will return an initialized and ready to use Controller.
 // If applicationKey or userKey is nil, all methods will have no effect.
-func New(applicationKey, userKey *string) (c *Controller) {
-	c = new(Controller)
-	if applicationKey != nil {
-		c.app = pushover.New(*applicationKey)
+func New(applicationKey, userKey string) (c *Controller) {
+	return &Controller{
+		app:  pushover.New(applicationKey),
+		dest: pushover.NewRecipient(userKey),
 	}
-	if userKey != nil {
-		c.dest = pushover.NewRecipient(*userKey)
-	}
-	return
-}
-
-func (c *Controller) initialized() bool {
-	return c.app != nil && c.dest != nil
 }
