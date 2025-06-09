@@ -58,11 +58,7 @@ func (c *Controller) SendLowestPriorityMsg(msg, title string) (err error) {
 }
 
 // SendCustomMsg allow to send a custom message
-func (c *Controller) SendCustomMsg(msg Message) error {
-	if !c.initialized() {
-		return fmt.Errorf("pushover controller not initialized")
-	}
-
+func (c *Controller) SendCustomMsg(msg Message) (err error) {
 	// prepare message
 	raw := pushover.Message{
 		Message:     msg.Message,
@@ -79,22 +75,20 @@ func (c *Controller) SendCustomMsg(msg Message) error {
 		HTML:        msg.HTML,
 	}
 	if msg.Attachment != nil {
-		raw.AddAttachment(msg.Attachment)
+		if err = raw.AddAttachment(msg.Attachment); err != nil {
+			err = fmt.Errorf("failed to add attachment: %w", err)
+			return
+		}
 	}
 	// send it
 	response, err := c.app.SendMessage(&raw, c.dest)
 	if err != nil {
 		return fmt.Errorf("sending fail: %w", err)
 	} else if response != nil && response.Status != 1 {
-
-		isLimitReached := response.Limit != nil && response.Limit.Remaining == 0
-		err := ServerError{
+		return ServerError{
 			Errors:       response.Errors,
-			limitReached: isLimitReached,
+			limitReached: response.Limit != nil && response.Limit.Remaining == 0,
 		}
-
-		return err
 	}
-
-	return nil
+	return
 }
